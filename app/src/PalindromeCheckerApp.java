@@ -1,37 +1,34 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter string for UC6: ");
+        System.out.print("Enter string: ");
         String input = sc.nextLine();
 
-        Queue<Character> queue = new LinkedList<>(); // FIFO
-        Stack<Character> stack = new Stack<>();       // LIFO
+        // Data Structure: Deque
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // 1. Enqueue and 2. Push characters
+        // 1. Insert characters into deque
         for (char c : input.toCharArray()) {
-            queue.add(c);  // Enqueue Operation
-            stack.push(c); // Push Operation
+            deque.addLast(c);
         }
 
-        // 3. Compare dequeue vs pop
         boolean isPalindrome = true;
-        while (!stack.isEmpty()) {
-            // Logical Comparison: matching FIFO output vs LIFO output
-            if (!queue.remove().equals(stack.pop())) {
+        // 2. Remove first & last and 3. Compare until empty
+        while (deque.size() > 1) {
+            // Front and Rear Access enables direct comparison
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
+
+            if (Character.toLowerCase(front) != Character.toLowerCase(rear)) {
                 isPalindrome = false;
                 break;
             }
         }
 
-        if (isPalindrome) {
-            System.out.println("Result: Palindrome confirmed using Stack and Queue.");
-        } else {
-            System.out.println("Result: Not a palindrome.");
-        }
+        System.out.println("Result: " + (isPalindrome ? "Palindrome" : "Not a palindrome"));
     }
 }
