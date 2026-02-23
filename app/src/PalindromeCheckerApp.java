@@ -1,40 +1,37 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
 public class PalindromeCheckerApp {
-
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter string for UC6: ");
+        String input = sc.nextLine();
 
-        System.out.println("--- UC5: Stack-Based Palindrome Checker ---");
-        System.out.print("Enter a string: ");
-        String input = scanner.nextLine();
+        Queue<Character> queue = new LinkedList<>(); // FIFO
+        Stack<Character> stack = new Stack<>();       // LIFO
 
-        // Use a Stack of Characters as the data structure
-        Stack<Character> stack = new Stack<>();
-
-        // 1. Push characters into stack
-        // Key Concept: Push Operation inserts characters into the stack
-        for (int i = 0; i < input.length(); i++) {
-            stack.push(input.charAt(i));
+        // 1. Enqueue and 2. Push characters
+        for (char c : input.toCharArray()) {
+            queue.add(c);  // Enqueue Operation
+            stack.push(c); // Push Operation
         }
 
-        // 2. Pop and compare
-        // Key Concept: Reversal Logic - Stack naturally reverses order
-        StringBuilder reversedString = new StringBuilder();
-
-        // Key Concept: Pop Operation removes characters in reverse order
+        // 3. Compare dequeue vs pop
+        boolean isPalindrome = true;
         while (!stack.isEmpty()) {
-            reversedString.append(stack.pop());
+            // Logical Comparison: matching FIFO output vs LIFO output
+            if (!queue.remove().equals(stack.pop())) {
+                isPalindrome = false;
+                break;
+            }
         }
 
-        // 3. Print result
-        if (input.equalsIgnoreCase(reversedString.toString())) {
-            System.out.println("Result: '" + input + "' is a palindrome.");
+        if (isPalindrome) {
+            System.out.println("Result: Palindrome confirmed using Stack and Queue.");
         } else {
-            System.out.println("Result: '" + input + "' is NOT a palindrome.");
+            System.out.println("Result: Not a palindrome.");
         }
-
-        scanner.close();
     }
 }
