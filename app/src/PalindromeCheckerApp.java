@@ -1,69 +1,40 @@
-/**
- * =========================================================
- * MAIN CLASS - UseCase4PalindromeCheckerApp
- * =========================================================
- *
- * Use Case 4: Character Array Based Validation
- *
- * Description:
- * This class validates a palindrome by converting
- * the string into a character array and comparing
- * characters using the two-pointer technique.
- *
- * At this stage, the application:
- * - Converts string to char array
- * - Uses start and end pointers
- * - Compares characters efficiently
- * - Displays the result
- *
- * This reduces extra memory usage.
- *
- * @author Developer
- * @version 4.0
- */
-
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point for UC4.
-     *
-     * @param args Command-line arguments
-     */
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter a string to check palindrome: ");
-        String input = scanner.nextLine();
+        System.out.println("--- UC3: Palindrome Check Using String Reverse ---");
+        System.out.print("Enter a string to check: ");
+        String original = scanner.nextLine();
 
-        // Optional normalization (remove spaces & ignore case)
-        input = input.replaceAll("\\s+", "").toLowerCase();
+        // 1. Reverse string using loop
+        String reversed = "";
 
-        // Convert string to char array
-        char[] characters = input.toCharArray();
-
-        // Two-pointer approach
-        int start = 0;
-        int end = characters.length - 1;
-
-        boolean isPalindrome = true;
-
-        while (start < end) {
-            if (characters[start] != characters[end]) {
-                isPalindrome = false;
-                break;
-            }
-            start++;
-            end--;
+        /* Key Concept: String Immutability
+           In each iteration, a new String object is created because
+           Strings in Java cannot be changed once created.
+        */
+        for (int i = original.length() - 1; i >= 0; i--) {
+            reversed += original.charAt(i); // String Concatenation (+)
         }
 
-        // Display result
+        // 2. Compare original and reversed
+        /* Key Concept: equals() Method
+           We use .equals() to compare the text content,
+           not '==' which would compare memory addresses.
+        */
+        boolean isPalindrome = original.equalsIgnoreCase(reversed);
+
+        // 3. Display result
+        System.out.println("Original String: " + original);
+        System.out.println("Reversed String: " + reversed);
+
         if (isPalindrome) {
-            System.out.println("The given string is a Palindrome.");
+            System.out.println("Result: The string IS a palindrome.");
         } else {
-            System.out.println("The given string is NOT a Palindrome.");
+            System.out.println("Result: The string IS NOT a palindrome.");
         }
 
         scanner.close();
