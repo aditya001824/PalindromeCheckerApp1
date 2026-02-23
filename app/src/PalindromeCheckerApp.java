@@ -1,34 +1,44 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Scanner;
+class Node {
+    char data;
+    Node next;
+    Node(char data) { this.data = data; }
+}
 
 public class PalindromeCheckerApp {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter string: ");
-        String input = sc.nextLine();
+    public static boolean isPalindrome(String input) {
+        if (input.isEmpty()) return true;
 
-        // Data Structure: Deque
-        Deque<Character> deque = new ArrayDeque<>();
-
-        // 1. Insert characters into deque
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
+        // 1. Convert string to linked list
+        Node head = new Node(input.charAt(0));
+        Node temp = head;
+        for (int i = 1; i < input.length(); i++) {
+            temp.next = new Node(input.charAt(i));
+            temp = temp.next;
         }
 
-        boolean isPalindrome = true;
-        // 2. Remove first & last and 3. Compare until empty
-        while (deque.size() > 1) {
-            // Front and Rear Access enables direct comparison
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (Character.toLowerCase(front) != Character.toLowerCase(rear)) {
-                isPalindrome = false;
-                break;
-            }
+        // 2. Find middle using Fast and Slow Pointer
+        Node slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        System.out.println("Result: " + (isPalindrome ? "Palindrome" : "Not a palindrome"));
+        // 3. In-Place Reversal of second half
+        Node prev = null, current = slow;
+        while (current != null) {
+            Node nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+        // 4. Compare halves
+        Node firstHalf = head, secondHalf = prev;
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) return false;
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+        return true;
     }
 }
